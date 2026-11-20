@@ -1,0 +1,142 @@
+/* Vice Coast Cover Studio — editor chrome. Dark UI, neon accents; the cover
+   itself is drawn on canvas (see src/cover.js). Fonts are local files under
+   fonts/, SIL Open Font License, so the app works fully offline. */
+@font-face {
+  font-family: 'Anton';
+  src: url('./fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pacifico';
+  src: url('./fonts/Pacifico-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; }
+:root {
+  --bg: #12041f;
+  --panel: #1e0b32;
+  --line: #3a1a5e;
+  --text: #f5efff;
+  --muted: #b9a6d6;
+  --accent: #ff2e88;
+  --accent2: #00e5ff;
+}
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+.app {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0 20px;
+  min-height: 100vh;
+  padding: 16px 20px;
+}
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.topbar h1 {
+  font-family: 'Anton', 'Arial Black', sans-serif;
+  font-size: 34px;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.topbar h1 span { color: var(--accent); }
+.topbar p { margin: 6px 0 0; color: var(--muted); }
+.sizes { display: flex; align-items: center; gap: 8px; }
+.sizes label { color: var(--muted); }
+
+.controls { padding-top: 14px; overflow-y: auto; }
+.group { margin-bottom: 18px; }
+.group h2 {
+  font-family: 'Anton', 'Arial Black', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  color: var(--accent2);
+}
+.buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+button, select, input[type="text"] {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+button { cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.swatch.on { background: linear-gradient(135deg, var(--g1), var(--g2)); }
+#export {
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 700;
+  padding: 9px 16px;
+}
+label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 13px; }
+label input, label select { display: block; width: 100%; margin-top: 4px; color: var(--text); }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+.row { display: flex; gap: 8px; }
+.row button { flex: 1; }
+.hint { color: var(--muted); font-size: 13px; }
+#status { color: var(--accent2); min-height: 1.5em; }
+
+.stage { padding-top: 14px; min-width: 0; }
+.canvas-wrap {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+#cover { display: block; width: 100%; height: auto; }
+#selection {
+  position: absolute;
+  display: none;
+  border: 3px dashed var(--accent2);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.stage .hint { text-align: center; }
+
+/* Screenshot mode: the cover alone, full frame, no editor chrome. */
+body.shot-cover { background: #000; }
+body.shot-cover .app { display: block; padding: 0; min-height: 0; }
+body.shot-cover .topbar, body.shot-cover .controls, body.shot-cover .stage .hint { display: none; }
+body.shot-cover .stage { padding: 0; }
+body.shot-cover .canvas-wrap {
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  width: 100vw;
+  height: 100vh;
+}
+body.shot-cover #cover { width: 100vw; height: 100vh; object-fit: contain; }
+body.shot-cover #selection { display: none !important; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .topbar { flex-direction: column; align-items: start; }
+}
